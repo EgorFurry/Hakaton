@@ -1,0 +1,62 @@
+{
+  "9cb9239f-2da9-4fe0-a676-b6418b53e305": {
+    "id": "9cb9239f-2da9-4fe0-a676-b6418b53e305",
+    "user_id": "user_001",
+    "credit_id": "credit_001",
+    "amount": 111.0,
+    "status": "pending",
+    "mode": "middleware",
+    "created_at": "2026-05-14T21:11:46.699438",
+    "synced_at": null
+  },
+  "99944645-9c02-4944-994f-218e82a5a5fc": {
+    "id": "99944645-9c02-4944-994f-218e82a5a5fc",
+    "user_id": "user_001",
+    "credit_id": "credit_001",
+    "amount": 111111.0,
+    "status": "pending",
+    "mode": "middleware",
+    "created_at": "2026-05-14T21:15:07.888547",
+    "synced_at": null
+  },
+  "7b3b6100-ae99-4426-b0ea-92514aab0bf6": {
+    "id": "7b3b6100-ae99-4426-b0ea-92514aab0bf6",
+    "user_id": "user_32a7a205",
+    "credit_id": "credit_001",
+    "amount": 11111.0,
+    "status": "pending",
+    "mode": "middleware",
+    "created_at": "2026-05-14T21:41:52.965239",
+    "synced_at": null
+  },
+  "ac4ce767-ee8a-4c0e-b940-7fa7a8d45195": {
+    "id": "ac4ce767-ee8a-4c0e-b940-7fa7a8d45195",
+    "user_id": "user_32a7a205",
+    "credit_id": "credit_001",
+    "amount": 11111.0,
+    "status": "pending",
+    "mode": "middleware",
+    "created_at": "2026-05-14T21:42:42.022597",
+    "synced_at": null
+  },
+  "05867726-6481-40d3-9c3d-186fa5ac3227": {
+    "id": "05867726-6481-40d3-9c3d-186fa5ac3227",
+    "user_id": "user_32a7a205",
+    "credit_id": "credit_001",
+    "amount": 1111.0,
+    "status": "completed",
+    "mode": "direct",
+    "created_at": "2026-05-14T21:48:40.998594",
+    "synced_at": "2026-05-14T21:48:40.998594"
+  },
+  "b04adb26-b14b-4d56-84b8-30728326fae7": {
+    "id": "b04adb26-b14b-4d56-84b8-30728326fae7",
+    "user_id": "user_32a7a205",
+    "credit_id": "credit_001",
+    "amount": 100.0,
+    "status": "pending",
+    "mode": "middleware",
+    "created_at": "2026-05-14T21:57:24.764720",
+    "synced_at": null
+  }
+}

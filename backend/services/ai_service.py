@@ -25,6 +25,9 @@ async def ask_ai(question: str) -> str:
                 json=payload
             )
             data = res.json()
-            return data['candidates'][0]['content']['parts'][0]['text']
+            candidates = data.get('candidates', [])
+            if not candidates:
+                return f"Gemini ошибка: {data.get('error', {}).get('message', str(data))}"
+            return candidates[0]['content']['parts'][0]['text']
     except Exception as e:
         return f"Ошибка AI: {str(e)}"
