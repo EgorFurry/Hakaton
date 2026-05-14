@@ -66,10 +66,6 @@
     .rcmd:hover { background:#FEF0EF; color:#C0392B; }
     #ruslan-btn:hover { transform: scale(1.08); }
     #ruslan-btn.talking { animation: bounceMascot 0.4s infinite alternate; }
-	#ruslan-panel {
-  width: calc(100vw - 80px);
-  max-width: 580px;
-}
   </style>
 </head>
 <body>
@@ -186,11 +182,11 @@
 <!-- РУСЛАН — AI МАСКОТ -->
 <div id="ruslan-wrapper" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;pointer-events:none;z-index:200;">
   <button id="ruslan-btn" onclick="toggleRuslan()" style="position:absolute;bottom:80px;right:12px;width:72px;height:72px;border-radius:50%;border:3px solid #C0392B;background:#2d1f3d;box-shadow:0 4px 16px rgba(0,0,0,0.3);cursor:pointer;padding:0;overflow:hidden;pointer-events:all;transition:transform 0.2s;" title="Руслан — AI маскот IncluBank">
-    <img id="ruslan-btn-img" src="static/mascot-smile.png" style="width:110%;height:110%;object-fit:cover;margin:-5%;border-radius:50%;"/>
+    <img id="ruslan-btn-img" src="static/mascot-smile.png" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"/>
   </button>
   <div id="ruslan-panel" style="display:none;position:absolute;bottom:160px;right:12px;width:290px;background:white;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.15);overflow:hidden;pointer-events:all;animation:slideUp 0.3s ease;">
     <div style="background:linear-gradient(135deg,#C0392B,#922B21);padding:14px 16px;display:flex;align-items:center;gap:10px;">
-      <img id="ruslan-face" src="static/mascot-smile.png" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:#2d1f3d;flex-shrink:0;"/>
+      <img id="ruslan-face" src="static/mascot-smile.png" style="width:52px;height:52px;border-radius:50%;object-fit:contain;border:2px solid rgba(255,255,255,0.5);background:#2d1f3d;flex-shrink:0;"/>
       <div>
         <div style="color:white;font-weight:700;font-size:15px">Руслан</div>
         <div style="color:rgba(255,255,255,0.8);font-size:11px" id="ruslan-status">🟢 AI маскот IncluBank</div>

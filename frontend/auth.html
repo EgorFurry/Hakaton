@@ -6,71 +6,34 @@
   <title>IncluBank — Вход</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --red: #C0392B; --red-dark: #922B21;
-      --bg: #F5F5F5; --white: #FFFFFF;
-      --text: #1A1A1A; --text-muted: #6B6B6B;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg); min-height: 100vh;
-      max-width: 430px; margin: 0 auto;
-    }
-    .header {
-      background: var(--red); padding: 60px 24px 40px; text-align: center;
-    }
-    .logo {
-      width: 64px; height: 64px; background: rgba(255,255,255,0.2);
-      border-radius: 20px; display: flex; align-items: center;
-      justify-content: center; font-size: 32px; margin: 0 auto 16px;
-    }
+    :root { --red: #C0392B; --red-dark: #922B21; --bg: #F5F5F5; --white: #FFFFFF; --text: #1A1A1A; --text-muted: #6B6B6B; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); min-height: 100vh; max-width: 430px; margin: 0 auto; }
+    .header { background: var(--red); padding: 60px 24px 40px; text-align: center; }
+    .logo { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 16px; }
     .header h1 { color: white; font-size: 28px; font-weight: 800; }
-    .header p  { color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 6px; }
-
-    .tabs {
-      display: flex; background: var(--white);
-      margin: -20px 16px 0; border-radius: 12px; padding: 4px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1); position: relative; z-index: 1;
-    }
-    .tab {
-      flex: 1; padding: 10px; text-align: center; font-size: 15px;
-      font-weight: 600; cursor: pointer; border-radius: 10px;
-      transition: all 0.2s; color: var(--text-muted); border: none; background: none;
-    }
+    .header p { color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 6px; }
+    .tabs { display: flex; background: var(--white); margin: -20px 16px 0; border-radius: 12px; padding: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); position: relative; z-index: 1; }
+    .tab { flex: 1; padding: 10px; text-align: center; font-size: 15px; font-weight: 600; cursor: pointer; border-radius: 10px; transition: all 0.2s; color: var(--text-muted); border: none; background: none; }
     .tab.active { background: var(--red); color: white; }
-
-    .form-card {
-      background: var(--white); border-radius: 16px;
-      padding: 24px; margin: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
+    .form-card { background: var(--white); border-radius: 16px; padding: 24px; margin: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .input-group { margin-bottom: 16px; }
     .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-    .input-group input {
-      width: 100%; border: 1.5px solid #E0E0E0; border-radius: 10px;
-      padding: 14px 16px; font-size: 16px; outline: none;
-      color: var(--text); background: var(--white); transition: border-color 0.2s;
-    }
+    .input-group input { width: 100%; border: 1.5px solid #E0E0E0; border-radius: 10px; padding: 14px 16px; font-size: 16px; outline: none; color: var(--text); background: var(--white); transition: border-color 0.2s; }
     .input-group input:focus { border-color: var(--red); }
-
-    .btn-primary {
-      background: var(--red); color: white; border: none;
-      border-radius: 12px; padding: 16px; font-size: 16px;
-      font-weight: 600; width: 100%; cursor: pointer;
-      transition: background 0.2s; margin-top: 4px;
-    }
+    .btn-primary { background: var(--red); color: white; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; width: 100%; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
     .btn-primary:active { background: var(--red-dark); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .error-msg {
-      background: #FEF0EF; border-left: 3px solid var(--red);
-      padding: 10px 14px; border-radius: 8px; font-size: 13px;
-      color: var(--red); margin-bottom: 16px; display: none;
-    }
+    .error-msg { background: #FEF0EF; border-left: 3px solid var(--red); padding: 10px 14px; border-radius: 8px; font-size: 13px; color: var(--red); margin-bottom: 16px; display: none; }
     .error-msg.visible { display: block; }
     .hint { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 16px; }
     .screen { display: none; }
     .screen.active { display: block; }
+
+    /* Desktop */
+    @media (min-width: 480px) {
+      html { background: #E0E0E0; }
+      body { border-radius: 32px; overflow: hidden; box-shadow: 0 12px 48px rgba(0,0,0,0.2); margin-top: 20px; margin-bottom: 20px; min-height: calc(100vh - 40px); }
+    }
   </style>
 </head>
 <body>
@@ -86,39 +49,22 @@
   <button class="tab" onclick="switchTab('register')">Регистрация</button>
 </div>
 
-<!-- LOGIN -->
 <div class="screen active" id="screen-login">
   <div class="form-card">
     <div class="error-msg" id="login-error"></div>
-    <div class="input-group">
-      <label>Номер телефона</label>
-      <input type="tel" id="login-phone" placeholder="+7 777 000 00 00"/>
-    </div>
-    <div class="input-group">
-      <label>Пароль</label>
-      <input type="password" id="login-password" placeholder="••••••••"/>
-    </div>
+    <div class="input-group"><label>Номер телефона</label><input type="tel" id="login-phone" placeholder="+7 777 000 00 00"/></div>
+    <div class="input-group"><label>Пароль</label><input type="password" id="login-password" placeholder="••••••••"/></div>
     <button class="btn-primary" id="login-btn" onclick="doLogin()">Войти</button>
     <div class="hint">Нет аккаунта? <span style="color:var(--red);cursor:pointer" onclick="switchTab('register')">Зарегистрироваться</span></div>
   </div>
 </div>
 
-<!-- REGISTER -->
 <div class="screen" id="screen-register">
   <div class="form-card">
     <div class="error-msg" id="register-error"></div>
-    <div class="input-group">
-      <label>Ваше имя</label>
-      <input type="text" id="reg-name" placeholder="Алибек Сейткали"/>
-    </div>
-    <div class="input-group">
-      <label>Номер телефона</label>
-      <input type="tel" id="reg-phone" placeholder="+7 777 000 00 00"/>
-    </div>
-    <div class="input-group">
-      <label>Пароль</label>
-      <input type="password" id="reg-password" placeholder="Минимум 6 символов"/>
-    </div>
+    <div class="input-group"><label>Ваше имя</label><input type="text" id="reg-name" placeholder="Алибек Сейткали"/></div>
+    <div class="input-group"><label>Номер телефона</label><input type="tel" id="reg-phone" placeholder="+7 777 000 00 00"/></div>
+    <div class="input-group"><label>Пароль</label><input type="password" id="reg-password" placeholder="Минимум 6 символов"/></div>
     <button class="btn-primary" id="register-btn" onclick="doRegister()">Создать аккаунт</button>
     <div class="hint">Уже есть аккаунт? <span style="color:var(--red);cursor:pointer" onclick="switchTab('login')">Войти</span></div>
   </div>
@@ -129,84 +75,61 @@ const API = 'http://localhost:8000';
 
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register'));
   });
-  document.getElementById('screen-login').classList.toggle('active', tab === 'login');
-  document.getElementById('screen-register').classList.toggle('active', tab === 'register');
+  document.getElementById('screen-login').classList.toggle('active', tab==='login');
+  document.getElementById('screen-register').classList.toggle('active', tab==='register');
 }
 
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.classList.add('visible');
-}
+function showError(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.classList.add('visible'); }
 function hideError(id) { document.getElementById(id).classList.remove('visible'); }
 
 async function doLogin() {
   hideError('login-error');
-  const phone    = document.getElementById('login-phone').value.trim();
-  const password = document.getElementById('login-password').value;
-  if (!phone || !password) { showError('login-error', 'Заполните все поля'); return; }
-
-  const btn = document.getElementById('login-btn');
-  btn.textContent = 'Вход...'; btn.disabled = true;
+  const phone=document.getElementById('login-phone').value.trim();
+  const password=document.getElementById('login-password').value;
+  if (!phone||!password) { showError('login-error','Заполните все поля'); return; }
+  const btn=document.getElementById('login-btn');
+  btn.textContent='Вход...'; btn.disabled=true;
   try {
-    const res = await fetch(`${API}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, password })
-    });
-    const data = await res.json();
-    if (!res.ok) { showError('login-error', data.detail || 'Неверный номер или пароль'); return; }
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user_id', data.user_id);
-    localStorage.setItem('user_name', data.name);
-    window.location.href = 'index.html';
-  } catch(e) {
-    showError('login-error', 'Нет соединения с сервером');
-  } finally {
-    btn.textContent = 'Войти'; btn.disabled = false;
-  }
+    const res=await fetch(`${API}/api/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,password})});
+    const data=await res.json();
+    if (!res.ok) { showError('login-error',data.detail||'Неверный номер или пароль'); return; }
+    localStorage.setItem('token',data.token);
+    localStorage.setItem('user_id',data.user_id);
+    localStorage.setItem('user_name',data.name);
+    window.location.href='index.html';
+  } catch(e) { showError('login-error','Нет соединения с сервером'); }
+  finally { btn.textContent='Войти'; btn.disabled=false; }
 }
 
 async function doRegister() {
   hideError('register-error');
-  const name     = document.getElementById('reg-name').value.trim();
-  const phone    = document.getElementById('reg-phone').value.trim();
-  const password = document.getElementById('reg-password').value;
-  if (!name || !phone || !password) { showError('register-error', 'Заполните все поля'); return; }
-  if (password.length < 6) { showError('register-error', 'Пароль минимум 6 символов'); return; }
-
-  const btn = document.getElementById('register-btn');
-  btn.textContent = 'Создаём...'; btn.disabled = true;
+  const name=document.getElementById('reg-name').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const password=document.getElementById('reg-password').value;
+  if (!name||!phone||!password) { showError('register-error','Заполните все поля'); return; }
+  if (password.length<6) { showError('register-error','Пароль минимум 6 символов'); return; }
+  const btn=document.getElementById('register-btn');
+  btn.textContent='Создаём...'; btn.disabled=true;
   try {
-    const res = await fetch(`${API}/api/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, password })
-    });
-    const data = await res.json();
-    if (!res.ok) { showError('register-error', data.detail || 'Ошибка регистрации'); return; }
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user_id', data.user_id);
-    localStorage.setItem('user_name', data.name);
-    window.location.href = 'index.html';
-  } catch(e) {
-    showError('register-error', 'Нет соединения с сервером');
-  } finally {
-    btn.textContent = 'Создать аккаунт'; btn.disabled = false;
-  }
+    const res=await fetch(`${API}/api/auth/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,password})});
+    const data=await res.json();
+    if (!res.ok) { showError('register-error',data.detail||'Ошибка регистрации'); return; }
+    localStorage.setItem('token',data.token);
+    localStorage.setItem('user_id',data.user_id);
+    localStorage.setItem('user_name',data.name);
+    window.location.href='index.html';
+  } catch(e) { showError('register-error','Нет соединения с сервером'); }
+  finally { btn.textContent='Создать аккаунт'; btn.disabled=false; }
 }
 
-// Если уже залогинен — сразу в приложение
-if (localStorage.getItem('token')) window.location.href = 'index.html';
+if (localStorage.getItem('token')) window.location.href='index.html';
 
-// Enter для сабмита
 document.addEventListener('keydown', e => {
-  if (e.key !== 'Enter') return;
-  const active = document.querySelector('.screen.active').id;
-  if (active === 'screen-login') doLogin();
-  else doRegister();
+  if (e.key!=='Enter') return;
+  const active=document.querySelector('.screen.active').id;
+  if (active==='screen-login') doLogin(); else doRegister();
 });
 </script>
 </body>
