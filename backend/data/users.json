@@ -1,0 +1,17 @@
+{
+  "user_001": {
+    "id": "user_001",
+    "name": "Алибек Сейткали",
+    "balance": 338778.0,
+    "accessibility_mode": "normal"
+  },
+  "user_32a7a205": {
+    "id": "user_32a7a205",
+    "name": "say walahi",
+    "phone": "+77051278293",
+    "password_hash": "7cbf1169778753ba992472c5f5d8ca59c4c90cececfaa6ef97f707b477a401c0",
+    "balance": 426567.0,
+    "accessibility_mode": "normal",
+    "created_at": "2026-05-14T21:36:35.077948"
+  }
+}
