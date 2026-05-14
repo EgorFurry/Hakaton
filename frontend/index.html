@@ -7,23 +7,19 @@
   <title>IncluBank</title>
   <link rel="manifest" href="manifest.json"/>
   <style>
-    /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --red:       #C0392B;
       --red-dark:  #922B21;
-      --red-light: #F1948A;
-      --gold:      #F4D03F;
       --bg:        #F5F5F5;
       --white:     #FFFFFF;
       --text:      #1A1A1A;
       --text-muted:#6B6B6B;
       --success:   #27AE60;
       --radius:    16px;
-      --font-size: 16px;   /* меняется в large_font режиме */
+      --font-size: 16px;
     }
 
-    /* Режим высокого контраста */
     body.high-contrast {
       --bg: #000000;
       --white: #111111;
@@ -31,9 +27,14 @@
       --text-muted: #CCCCCC;
       --red: #FF4444;
     }
-
-    /* Крупный шрифт */
     body.large-font { --font-size: 20px; }
+
+    /* Подсветка выбранного элемента в blind режиме */
+    body.blind-mode [data-accessible].selected {
+      outline: 3px solid var(--red);
+      outline-offset: 3px;
+      background: rgba(192, 57, 43, 0.08) !important;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -45,21 +46,12 @@
       margin: 0 auto;
     }
 
-    /* ─── Screens ─── */
     .screen { display: none; flex-direction: column; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* ─── Header ─── */
-    .header {
-      background: var(--red);
-      color: white;
-      padding: 48px 20px 20px;
-    }
+    .header { background: var(--red); color: white; padding: 48px 20px 20px; }
     .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .header h2 { font-size: 14px; opacity: 0.85; font-weight: 400; }
-    .header .balance { font-size: 32px; font-weight: 700; margin-top: 4px; }
 
-    /* ─── Card ─── */
     .card {
       background: var(--white);
       border-radius: var(--radius);
@@ -68,84 +60,48 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .card-title { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-    .card-value { font-size: 22px; font-weight: 700; }
 
-    /* ─── Action buttons ─── */
     .actions { display: flex; gap: 12px; padding: 0 16px; }
     .action-btn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      background: var(--white);
-      border: none;
-      border-radius: var(--radius);
-      padding: 16px 8px;
-      cursor: pointer;
-      font-size: 12px;
-      color: var(--text);
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 8px;
+      background: var(--white); border: none;
+      border-radius: var(--radius); padding: 16px 8px;
+      cursor: pointer; font-size: 12px; color: var(--text);
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .action-btn .icon {
-      width: 44px; height: 44px;
-      background: #FEF0EF;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
+      width: 44px; height: 44px; background: #FEF0EF;
+      border-radius: 12px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px;
     }
 
-    /* ─── Primary button ─── */
     .btn-primary {
-      background: var(--red);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: 600;
-      width: 100%;
-      cursor: pointer;
-      transition: background 0.2s;
+      background: var(--red); color: white; border: none;
+      border-radius: 12px; padding: 16px; font-size: 16px;
+      font-weight: 600; width: 100%; cursor: pointer; transition: background 0.2s;
     }
     .btn-primary:active { background: var(--red-dark); }
 
-    /* ─── Input ─── */
     .input-group { margin-bottom: 16px; }
     .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
     .input-group input {
-      width: 100%;
-      border: 1.5px solid #E0E0E0;
-      border-radius: 10px;
-      padding: 14px 16px;
-      font-size: 18px;
-      font-weight: 600;
-      outline: none;
-      color: var(--text);
-      background: var(--white);
+      width: 100%; border: 1.5px solid #E0E0E0; border-radius: 10px;
+      padding: 14px 16px; font-size: 18px; font-weight: 600;
+      outline: none; color: var(--text); background: var(--white);
     }
     .input-group input:focus { border-color: var(--red); }
 
-    /* ─── ABS Banner ─── */
     .abs-banner {
-      background: #FFF3CD;
-      border-left: 4px solid #F39C12;
-      padding: 10px 16px;
-      margin: 0 16px 8px;
-      border-radius: 8px;
-      font-size: 13px;
-      color: #7D6608;
-      display: none;
+      background: #FFF3CD; border-left: 4px solid #F39C12;
+      padding: 10px 16px; margin: 0 16px 8px;
+      border-radius: 8px; font-size: 13px; color: #7D6608; display: none;
     }
     .abs-banner.visible { display: block; }
 
-    /* ─── Transaction list ─── */
     .tx-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid #F0F0F0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid #F0F0F0;
     }
     .tx-item:last-child { border-bottom: none; }
     .tx-info { display: flex; flex-direction: column; gap: 3px; }
@@ -154,146 +110,129 @@
     .tx-amount { font-weight: 700; color: #E74C3C; }
     .tx-pending { font-size: 11px; color: #F39C12; }
 
-    /* ─── Bottom Nav ─── */
     .bottom-nav {
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 430px;
-      background: var(--white);
-      display: flex;
-      border-top: 1px solid #F0F0F0;
+      width: 100%; max-width: 430px; background: var(--white);
+      display: flex; border-top: 1px solid #F0F0F0;
       padding-bottom: env(safe-area-inset-bottom);
     }
     .nav-item {
       flex: 1; display: flex; flex-direction: column;
-      align-items: center; gap: 4px;
-      padding: 10px 0;
+      align-items: center; gap: 4px; padding: 10px 0;
       font-size: 11px; color: var(--text-muted);
       cursor: pointer; border: none; background: none;
-      transition: color 0.2s;
     }
     .nav-item.active { color: var(--red); }
     .nav-item svg { width: 24px; height: 24px; }
 
-    /* ─── Success screen ─── */
     .success-circle {
-      width: 100px; height: 100px;
-      background: #EAFAF1;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 40px auto 20px;
-      font-size: 48px;
+      width: 100px; height: 100px; background: #EAFAF1;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; margin: 40px auto 20px; font-size: 48px;
     }
 
-    /* ─── Settings toggles ─── */
     .setting-row {
       display: flex; justify-content: space-between; align-items: center;
       padding: 16px 0; border-bottom: 1px solid #F0F0F0;
     }
     .toggle {
-      width: 50px; height: 28px;
-      background: #E0E0E0; border-radius: 14px;
-      position: relative; cursor: pointer; transition: background 0.2s;
+      width: 50px; height: 28px; background: #E0E0E0;
+      border-radius: 14px; position: relative; cursor: pointer;
+      transition: background 0.2s; flex-shrink: 0;
     }
     .toggle.on { background: var(--red); }
     .toggle::after {
-      content: ''; position: absolute;
-      width: 22px; height: 22px;
-      background: white; border-radius: 50%;
-      top: 3px; left: 3px; transition: transform 0.2s;
+      content: ''; position: absolute; width: 22px; height: 22px;
+      background: white; border-radius: 50%; top: 3px; left: 3px;
+      transition: transform 0.2s;
     }
     .toggle.on::after { transform: translateX(22px); }
 
-    /* ─── Voice button ─── */
     .voice-btn {
-      background: none; border: 2px solid var(--red);
-      border-radius: 50%; width: 48px; height: 48px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--red); font-size: 20px;
-      transition: all 0.2s;
+      background: none; border: 2px solid var(--red); border-radius: 50%;
+      width: 48px; height: 48px; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; color: var(--red);
+      font-size: 20px; transition: all 0.2s; flex-shrink: 0;
     }
     .voice-btn.listening { background: var(--red); color: white; animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
 
+    .blind-hint {
+      display: none; background: #1A1A1A; color: white;
+      text-align: center; padding: 8px; font-size: 13px;
+      position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 32px); max-width: 400px;
+      border-radius: 10px; z-index: 100;
+    }
+    body.blind-mode .blind-hint { display: block; }
     .pb-nav { padding-bottom: 80px; }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     SCREEN: HOME
-══════════════════════════════════════ -->
+<div class="blind-hint">Режим для слабовидящих: 1 касание — озвучить, 2 касания — открыть</div>
+
+<!-- HOME -->
 <div class="screen active" id="screen-home">
   <div class="header">
     <div class="header-top">
       <div>
-        <div class="header h2" id="user-greeting">Привет,</div>
+        <div style="color:white;opacity:0.85;font-size:14px">Привет,</div>
         <div style="color:white;font-weight:700;font-size:18px" id="user-name">Загрузка...</div>
       </div>
       <div style="width:44px;height:44px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>
     </div>
-    <div class="header h2">Общий баланс</div>
-    <div class="balance" id="user-balance">— ₸</div>
+    <div style="color:white;opacity:0.85;font-size:14px">Общий баланс</div>
+    <div style="color:white;font-size:32px;font-weight:700;margin-top:4px" id="user-balance">— ₸</div>
   </div>
 
-  <div class="abs-banner" id="abs-banner">
-    ⏳ Внебанковское время. Платежи принимаются и обработаются утром.
-  </div>
+  <div class="abs-banner" id="abs-banner">⏳ Внебанковское время. Платежи принимаются и будут обработаны утром.</div>
 
-  <div class="actions">
-    <button class="action-btn" onclick="showScreen('screen-payment')">
-      <div class="icon">💳</div>
-      Погашение
+  <div class="actions" style="margin-top:16px">
+    <button class="action-btn" data-accessible data-label="Погашение кредита. Нажмите ещё раз чтобы перейти" onclick="accessibleAction(this, () => showScreen('screen-payment'))">
+      <div class="icon">💳</div>Погашение
     </button>
-    <button class="action-btn" onclick="showScreen('screen-transactions')">
-      <div class="icon">📋</div>
-      История
+    <button class="action-btn" data-accessible data-label="История платежей. Нажмите ещё раз чтобы перейти" onclick="accessibleAction(this, () => showScreen('screen-transactions'))">
+      <div class="icon">📋</div>История
     </button>
-    <button class="action-btn" onclick="showScreen('screen-settings')">
-      <div class="icon">⚙️</div>
-      Настройки
+    <button class="action-btn" data-accessible data-label="Настройки доступности. Нажмите ещё раз чтобы перейти" onclick="accessibleAction(this, () => showScreen('screen-settings'))">
+      <div class="icon">⚙️</div>Настройки
     </button>
   </div>
 
   <div class="card" style="margin-top:16px">
     <div class="card-title">Активный кредит</div>
-    <div class="card-value">1 200 000 ₸</div>
+    <div style="font-size:22px;font-weight:700">1 200 000 ₸</div>
     <div style="font-size:13px;color:var(--text-muted);margin-top:4px">Ежемесячный платёж: 85 000 ₸</div>
-    <button class="btn-primary" style="margin-top:16px" onclick="showScreen('screen-payment')">
+    <button class="btn-primary" style="margin-top:16px" data-accessible data-label="Погасить кредит. Нажмите ещё раз для подтверждения" onclick="accessibleAction(this, () => showScreen('screen-payment'))">
       Погасить кредит
     </button>
   </div>
 
   <div class="bottom-nav">
-    <button class="nav-item active" onclick="showScreen('screen-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-      Главная
+    <button class="nav-item active" data-accessible data-label="Главная страница" onclick="accessibleAction(this, () => showScreen('screen-home'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Главная
     </button>
-    <button class="nav-item" onclick="showScreen('screen-transactions')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      История
+    <button class="nav-item" data-accessible data-label="История платежей" onclick="accessibleAction(this, () => showScreen('screen-transactions'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>История
     </button>
-    <button class="nav-item" onclick="showScreen('screen-settings')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      Настройки
+    <button class="nav-item" data-accessible data-label="Настройки" onclick="accessibleAction(this, () => showScreen('screen-settings'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Настройки
     </button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN: PAYMENT
-══════════════════════════════════════ -->
+<!-- PAYMENT -->
 <div class="screen" id="screen-payment">
   <div class="header" style="padding-top:20px">
-    <button onclick="showScreen('screen-home')" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">←</button>
+    <button data-accessible data-label="Назад на главную" onclick="accessibleAction(this, () => showScreen('screen-home'))" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">←</button>
     <h1 style="color:white;font-size:20px;margin-top:8px">Погашение кредита</h1>
   </div>
-
   <div class="card">
     <div style="background:#FEF0EF;border-radius:12px;padding:14px;margin-bottom:20px">
       <div style="font-size:13px;color:var(--text-muted)">Номер карты</div>
       <div style="font-weight:700;font-size:16px;letter-spacing:2px">**** **** **** 1234</div>
     </div>
-
     <div class="input-group">
       <label>Сумма погашения</label>
       <div style="display:flex;gap:8px;align-items:center">
@@ -301,129 +240,75 @@
         <button class="voice-btn" id="voice-btn" onclick="startVoice()" title="Голосовой ввод">🎤</button>
       </div>
     </div>
-
-    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">
-      Доступно для погашения: <strong>1 200 000 ₸</strong>
-    </div>
-
-    <button class="btn-primary" onclick="submitPayment()">Оплатить</button>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Доступно для погашения: <strong>1 200 000 ₸</strong></div>
+    <button class="btn-primary" data-accessible data-label="Оплатить кредит. Нажмите ещё раз для подтверждения" onclick="accessibleAction(this, submitPayment)">Оплатить</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN: SUCCESS
-══════════════════════════════════════ -->
+<!-- SUCCESS -->
 <div class="screen" id="screen-success" style="text-align:center;padding:20px">
   <div class="success-circle">✅</div>
   <h2 style="font-size:24px;font-weight:700">Платёж проведён</h2>
   <p style="color:var(--text-muted);margin-top:8px" id="success-amount"></p>
   <div class="card" style="margin-top:24px;text-align:left">
     <div class="card-title">Детали операции</div>
-    <div class="tx-item">
-      <span style="color:var(--text-muted)">Статус</span>
-      <span style="color:var(--success);font-weight:600">Успешно ✓</span>
-    </div>
-    <div class="tx-item">
-      <span style="color:var(--text-muted)">Режим</span>
-      <span id="success-mode" style="font-weight:600"></span>
-    </div>
-    <div class="tx-item">
-      <span style="color:var(--text-muted)">ID операции</span>
-      <span id="success-id" style="font-size:12px;color:var(--text-muted)"></span>
-    </div>
+    <div class="tx-item"><span style="color:var(--text-muted)">Статус</span><span style="color:var(--success);font-weight:600">Успешно ✓</span></div>
+    <div class="tx-item"><span style="color:var(--text-muted)">Режим</span><span id="success-mode" style="font-weight:600"></span></div>
+    <div class="tx-item"><span style="color:var(--text-muted)">ID операции</span><span id="success-id" style="font-size:12px;color:var(--text-muted)"></span></div>
   </div>
-  <button class="btn-primary" style="margin-top:24px" onclick="showScreen('screen-home')">На главную</button>
+  <button class="btn-primary" style="margin-top:24px" data-accessible data-label="Вернуться на главную" onclick="accessibleAction(this, () => showScreen('screen-home'))">На главную</button>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN: TRANSACTIONS
-══════════════════════════════════════ -->
+<!-- TRANSACTIONS -->
 <div class="screen pb-nav" id="screen-transactions">
   <div class="header" style="padding-top:20px">
-    <button onclick="showScreen('screen-home')" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">←</button>
+    <button data-accessible data-label="Назад" onclick="accessibleAction(this, () => showScreen('screen-home'))" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">←</button>
     <h1 style="color:white;font-size:20px;margin-top:8px">История платежей</h1>
   </div>
-  <div class="card">
-    <div id="tx-list">
-      <div style="color:var(--text-muted);text-align:center;padding:20px">Загрузка...</div>
-    </div>
-  </div>
+  <div class="card"><div id="tx-list"><div style="color:var(--text-muted);text-align:center;padding:20px">Загрузка...</div></div></div>
   <div class="bottom-nav">
-    <button class="nav-item" onclick="showScreen('screen-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-      Главная
-    </button>
-    <button class="nav-item active" onclick="loadTransactions()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      История
-    </button>
-    <button class="nav-item" onclick="showScreen('screen-settings')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-      Настройки
-    </button>
+    <button class="nav-item" data-accessible data-label="Главная" onclick="accessibleAction(this, () => showScreen('screen-home'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Главная</button>
+    <button class="nav-item active" data-accessible data-label="История" onclick="accessibleAction(this, loadTransactions)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>История</button>
+    <button class="nav-item" data-accessible data-label="Настройки" onclick="accessibleAction(this, () => showScreen('screen-settings'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Настройки</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN: SETTINGS
-══════════════════════════════════════ -->
+<!-- SETTINGS -->
 <div class="screen pb-nav" id="screen-settings">
   <div class="header" style="padding-top:20px">
-    <button onclick="showScreen('screen-home')" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">←</button>
+    <button data-accessible data-label="Назад" onclick="accessibleAction(this, () => showScreen('screen-home'))" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">←</button>
     <h1 style="color:white;font-size:20px;margin-top:8px">Настройки доступности</h1>
   </div>
   <div class="card">
     <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">AI-адаптация интерфейса</div>
-
     <div class="setting-row">
-      <div>
-        <div style="font-weight:600">Высокий контраст</div>
-        <div style="font-size:13px;color:var(--text-muted)">Для слабовидящих пользователей</div>
-      </div>
+      <div><div style="font-weight:600">Режим для слабовидящих</div><div style="font-size:13px;color:var(--text-muted)">1 клик — озвучить, 2 клика — открыть</div></div>
+      <div class="toggle" id="toggle-blind" onclick="toggleBlindMode(this)"></div>
+    </div>
+    <div class="setting-row">
+      <div><div style="font-weight:600">Высокий контраст</div><div style="font-size:13px;color:var(--text-muted)">Для слабовидящих пользователей</div></div>
       <div class="toggle" id="toggle-contrast" onclick="toggleMode('high_contrast', this)"></div>
     </div>
-
     <div class="setting-row">
-      <div>
-        <div style="font-weight:600">Крупный шрифт</div>
-        <div style="font-size:13px;color:var(--text-muted)">Увеличенный размер текста</div>
-      </div>
+      <div><div style="font-weight:600">Крупный шрифт</div><div style="font-size:13px;color:var(--text-muted)">Увеличенный размер текста</div></div>
       <div class="toggle" id="toggle-font" onclick="toggleMode('large_font', this)"></div>
     </div>
-
     <div class="setting-row">
-      <div>
-        <div style="font-weight:600">Голосовое управление</div>
-        <div style="font-size:13px;color:var(--text-muted)">Ввод суммы голосом</div>
-      </div>
+      <div><div style="font-weight:600">Голосовой ввод суммы</div><div style="font-size:13px;color:var(--text-muted)">Кнопка 🎤 на экране оплаты</div></div>
       <div style="color:var(--success);font-weight:600">Вкл ✓</div>
     </div>
   </div>
-
   <div class="card">
     <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Статус АБС (демо)</div>
     <div class="setting-row">
-      <div>
-        <div style="font-weight:600" id="abs-status-text">Загрузка...</div>
-        <div style="font-size:13px;color:var(--text-muted)">Автоматическая синхронизация</div>
-      </div>
+      <div><div style="font-weight:600" id="abs-status-text">Загрузка...</div><div style="font-size:13px;color:var(--text-muted)">Автоматическая синхронизация</div></div>
       <div id="abs-indicator" style="width:12px;height:12px;border-radius:50%;background:#ccc"></div>
     </div>
   </div>
-
   <div class="bottom-nav">
-    <button class="nav-item" onclick="showScreen('screen-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-      Главная
-    </button>
-    <button class="nav-item" onclick="showScreen('screen-transactions')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      История
-    </button>
-    <button class="nav-item active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-      Настройки
-    </button>
+    <button class="nav-item" data-accessible data-label="Главная" onclick="accessibleAction(this, () => showScreen('screen-home'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Главная</button>
+    <button class="nav-item" data-accessible data-label="История" onclick="accessibleAction(this, () => showScreen('screen-transactions'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>История</button>
+    <button class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Настройки</button>
   </div>
 </div>
 
@@ -431,37 +316,77 @@
 const API = 'http://localhost:8000';
 const USER_ID = 'user_001';
 
-// ─── Навигация ───
+let blindMode = false;
+let lastSelected = null;
+
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ru-RU';
+  u.rate = 0.9;
+  window.speechSynthesis.speak(u);
+}
+
+function accessibleAction(element, action) {
+  if (!blindMode) { action(); return; }
+
+  if (lastSelected === element) {
+    element.classList.remove('selected');
+    lastSelected = null;
+    window.speechSynthesis.cancel();
+    action();
+  } else {
+    if (lastSelected) lastSelected.classList.remove('selected');
+    lastSelected = element;
+    element.classList.add('selected');
+    speak(element.dataset.label || element.textContent.trim());
+  }
+}
+
+function toggleBlindMode(el) {
+  blindMode = !blindMode;
+  el.classList.toggle('on', blindMode);
+  document.body.classList.toggle('blind-mode', blindMode);
+  if (blindMode) {
+    speak('Режим для слабовидящих включён. Одно касание — озвучить, два касания — открыть.');
+  } else {
+    if (lastSelected) { lastSelected.classList.remove('selected'); lastSelected = null; }
+    window.speechSynthesis.cancel();
+  }
+  fetch(`${API}/accessibility`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: USER_ID, mode: blindMode ? 'blind' : 'normal' })
+  }).catch(() => {});
+}
+
 function showScreen(id) {
+  if (lastSelected) { lastSelected.classList.remove('selected'); lastSelected = null; }
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (id === 'screen-transactions') loadTransactions();
   if (id === 'screen-settings') loadAbsStatus();
+  if (blindMode) {
+    const names = { 'screen-home':'Главная страница','screen-payment':'Погашение кредита','screen-transactions':'История платежей','screen-settings':'Настройки доступности','screen-success':'Платёж успешно проведён' };
+    speak(names[id] || '');
+  }
 }
 
-// ─── Загрузка данных юзера ───
 async function loadUser() {
   try {
     const res = await fetch(`${API}/user/${USER_ID}`);
     const u = await res.json();
     document.getElementById('user-name').textContent = u.name;
-    document.getElementById('user-greeting').textContent = 'Привет,';
-    document.getElementById('user-balance').textContent =
-      u.balance.toLocaleString('ru-RU') + ' ₸';
+    document.getElementById('user-balance').textContent = u.balance.toLocaleString('ru-RU') + ' ₸';
     applyAccessibility(u.accessibility_mode);
-  } catch(e) {
-    document.getElementById('user-balance').textContent = 'Офлайн';
-  }
+  } catch(e) { document.getElementById('user-balance').textContent = 'Офлайн'; }
 }
 
-// ─── Статус АБС ───
 async function checkAbsStatus() {
   try {
     const res = await fetch(`${API}/admin/abs-status`);
     const data = await res.json();
-    const banner = document.getElementById('abs-banner');
-    if (!data.abs_available) banner.classList.add('visible');
-    else banner.classList.remove('visible');
+    document.getElementById('abs-banner').classList.toggle('visible', !data.abs_available);
   } catch(e) {}
 }
 
@@ -469,28 +394,21 @@ async function loadAbsStatus() {
   try {
     const res = await fetch(`${API}/admin/abs-status`);
     const data = await res.json();
-    const txt = document.getElementById('abs-status-text');
-    const dot = document.getElementById('abs-indicator');
-    if (data.abs_available) {
-      txt.textContent = 'АБС доступна';
-      dot.style.background = '#27AE60';
-    } else {
-      txt.textContent = 'АБС недоступна (нерабочее время)';
-      dot.style.background = '#E74C3C';
-    }
+    document.getElementById('abs-status-text').textContent = data.abs_available ? 'АБС доступна' : 'АБС недоступна (нерабочее время)';
+    document.getElementById('abs-indicator').style.background = data.abs_available ? '#27AE60' : '#E74C3C';
   } catch(e) {}
 }
 
-// ─── Оплата ───
 async function submitPayment() {
   const amount = parseFloat(document.getElementById('payment-amount').value);
   if (!amount || amount < 1) {
-    alert('Введи сумму'); return;
+    if (blindMode) speak('Ошибка. Введите сумму платежа.');
+    else alert('Введи сумму');
+    return;
   }
   const btn = document.querySelector('#screen-payment .btn-primary');
   btn.textContent = 'Обработка...';
   btn.disabled = true;
-
   try {
     const res = await fetch(`${API}/payment`, {
       method: 'POST',
@@ -498,34 +416,27 @@ async function submitPayment() {
       body: JSON.stringify({ user_id: USER_ID, credit_id: 'credit_001', amount })
     });
     const data = await res.json();
-
-    // Показываем успех в любом случае (middleware режим скрыт от клиента)
-    document.getElementById('success-amount').textContent =
-      `${amount.toLocaleString('ru-RU')} ₸`;
-    document.getElementById('success-mode').textContent =
-      data.mode === 'middleware' ? '⏳ Middleware (синхронизация позже)' : '✅ Прямой (АБС)';
+    document.getElementById('success-amount').textContent = `${amount.toLocaleString('ru-RU')} ₸`;
+    document.getElementById('success-mode').textContent = data.mode === 'middleware' ? '⏳ Middleware (синхронизация позже)' : '✅ Прямой (АБС)';
     document.getElementById('success-id').textContent = data.payment_id;
-
+    if (blindMode) speak(`Платёж на сумму ${amount.toLocaleString('ru-RU')} тенге успешно проведён.`);
     showScreen('screen-success');
-    loadUser(); // обновляем баланс
+    loadUser();
   } catch(e) {
-    alert('Ошибка соединения');
+    if (blindMode) speak('Ошибка соединения с сервером.');
+    else alert('Ошибка соединения');
   } finally {
     btn.textContent = 'Оплатить';
     btn.disabled = false;
   }
 }
 
-// ─── История транзакций ───
 async function loadTransactions() {
   const list = document.getElementById('tx-list');
   try {
     const res = await fetch(`${API}/payments/${USER_ID}`);
     const txs = await res.json();
-    if (!txs.length) {
-      list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Платежей пока нет</div>';
-      return;
-    }
+    if (!txs.length) { list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Платежей пока нет</div>'; return; }
     list.innerHTML = txs.map(tx => `
       <div class="tx-item">
         <div class="tx-info">
@@ -534,60 +445,46 @@ async function loadTransactions() {
           ${tx.status === 'pending' ? '<div class="tx-pending">⏳ Ожидает синхронизации с АБС</div>' : ''}
         </div>
         <div class="tx-amount">−${tx.amount.toLocaleString('ru-RU')} ₸</div>
-      </div>
-    `).join('');
-  } catch(e) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Нет соединения</div>';
-  }
+      </div>`).join('');
+  } catch(e) { list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Нет соединения</div>'; }
 }
 
-// ─── Настройки доступности ───
 async function toggleMode(mode, el) {
   const isOn = el.classList.toggle('on');
-  const newMode = isOn ? mode : 'normal';
-  applyAccessibility(newMode);
+  applyAccessibility(isOn ? mode : 'normal');
   try {
-    await fetch(`${API}/accessibility`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: USER_ID, mode: newMode })
-    });
+    await fetch(`${API}/accessibility`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: USER_ID, mode: isOn ? mode : 'normal' }) });
   } catch(e) {}
 }
 
 function applyAccessibility(mode) {
   document.body.classList.remove('high-contrast', 'large-font');
   if (mode === 'high_contrast') document.body.classList.add('high-contrast');
-  if (mode === 'large_font')    document.body.classList.add('large-font');
+  if (mode === 'large_font') document.body.classList.add('large-font');
 }
 
-// ─── Голосовой ввод ───
 function startVoice() {
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    alert('Голосовой ввод не поддерживается в этом браузере'); return;
-  }
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { alert('Голосовой ввод не поддерживается'); return; }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const rec = new SR();
   rec.lang = 'ru-RU';
-  rec.interimResults = false;
-
   const btn = document.getElementById('voice-btn');
   btn.classList.add('listening');
-
+  if (blindMode) speak('Говорите сумму платежа');
   rec.onresult = (e) => {
-    const text = e.results[0][0].transcript;
-    // Извлекаем число из голоса: "пятьдесят тысяч" → тяжело, берём цифры
-    const num = text.replace(/[^0-9]/g, '');
-    if (num) document.getElementById('payment-amount').value = num;
+    const num = e.results[0][0].transcript.replace(/[^0-9]/g, '');
+    if (num) {
+      document.getElementById('payment-amount').value = num;
+      if (blindMode) speak(`Сумма: ${parseInt(num).toLocaleString('ru-RU')} тенге`);
+    }
   };
   rec.onend = () => btn.classList.remove('listening');
   rec.start();
 }
 
-// ─── Инициализация ───
 loadUser();
 checkAbsStatus();
-setInterval(checkAbsStatus, 30000); // проверяем каждые 30 сек
+setInterval(checkAbsStatus, 30000);
 </script>
 </body>
 </html>
